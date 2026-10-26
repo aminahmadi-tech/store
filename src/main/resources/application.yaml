@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    url: ${STORE_DB_URL}
+    username: ${STORE_DB_USERNAME}
+    password: ${STORE_DB_PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
