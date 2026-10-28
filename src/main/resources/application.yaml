@@ -3,6 +3,9 @@ spring:
     url: ${STORE_DB_URL}
     username: ${STORE_DB_USERNAME}
     password: ${STORE_DB_PASSWORD}
+  jackson:
+    deserialization:
+      fail-on-unknown-properties: true
 
   jpa:
     hibernate:
@@ -11,3 +14,9 @@ spring:
 server:
   servlet:
     context-path: /api/v1
+  port: 8080
+
+jwt:
+  secret: ${JWT_SECRET}
+  access-token-expiration-second: 900
+  refresh-token-expiration-second: 864000

@@ -1,5 +1,7 @@
 package ir.aminahmadi24.store.controller;
 
+import ir.aminahmadi24.store.dto.UserLoginRequest;
+import ir.aminahmadi24.store.dto.UserLoginResponse;
 import ir.aminahmadi24.store.dto.UserRegisterRequest;
 import ir.aminahmadi24.store.dto.UserRegisterResponse;
 import ir.aminahmadi24.store.service.AuthService;
@@ -23,7 +25,13 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<UserRegisterResponse> register(@Valid @RequestBody UserRegisterRequest request){
         UserRegisterResponse response = authService.register(request);
-        URI location = URI.create("/api/v1/auth/" + response.id());
+        URI location = URI.create("/api/v1/users/" + response.id());
         return ResponseEntity.created(location).body(response);
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<UserLoginResponse> login(@Valid @RequestBody UserLoginRequest request){
+        return ResponseEntity.ok(authService.login(request));
+    }
+
 }
