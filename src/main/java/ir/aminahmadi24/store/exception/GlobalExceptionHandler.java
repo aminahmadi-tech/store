@@ -20,7 +20,8 @@ public class GlobalExceptionHandler {
         FieldError fieldError = ex.getBindingResult().getFieldError();
         String message;
         if(fieldError != null)
-            message = fieldError.getField() + ": " + fieldError.getDefaultMessage();
+//            message = fieldError.getField() + ": " + fieldError.getDefaultMessage();
+            message = fieldError.getDefaultMessage();
         else
             message = "Request validation failed.";
 

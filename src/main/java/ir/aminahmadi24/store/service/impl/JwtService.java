@@ -1,5 +1,6 @@
 package ir.aminahmadi24.store.service.impl;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import ir.aminahmadi24.store.dto.UserDto;
@@ -63,5 +64,14 @@ public class JwtService implements TokenService {
                 .expiration(new Date(System.currentTimeMillis() + (expirationSecond * 1000)))
                 .signWith(secretKey)
                 .compact();
+    }
+
+    @Override
+    public Claims extractClaims(String token){
+        return Jwts.parser()
+                .verifyWith(secretKey)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
     }
 }
