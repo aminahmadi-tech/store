@@ -3,15 +3,21 @@ package ir.aminahmadi24.store.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 
+
 import java.time.Instant;
 
-public class BaseEntity {
+@MappedSuperclass
+@Getter
+public abstract class BaseEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
 
-
-    @Column(name = "created_at")
+    @Column(name = "created_at", updatable = false)
     private Instant createdAt;
 
-    @Column(name = "created_at")
+    @Column(name = "updated_at")
     private Instant updatedAt;
 
     @PrePersist

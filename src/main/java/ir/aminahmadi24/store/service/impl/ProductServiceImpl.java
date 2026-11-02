@@ -2,14 +2,18 @@ package ir.aminahmadi24.store.service.impl;
 
 import ir.aminahmadi24.store.dto.AddProductRequest;
 import ir.aminahmadi24.store.dto.AddProductResponse;
+import ir.aminahmadi24.store.dto.UpdateProductQuantityRequest;
 import ir.aminahmadi24.store.entity.CategoryEntity;
 import ir.aminahmadi24.store.entity.ProductEntity;
+import ir.aminahmadi24.store.enumeration.CustomError;
 import ir.aminahmadi24.store.enumeration.Message;
 import ir.aminahmadi24.store.exception.CategoryNotFoundException;
+import ir.aminahmadi24.store.exception.ProductNotFoundException;
 import ir.aminahmadi24.store.mapper.ProductMapper;
 import ir.aminahmadi24.store.repository.CategoryRepository;
 import ir.aminahmadi24.store.repository.ProductRepository;
 import ir.aminahmadi24.store.service.ProductService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -46,5 +50,13 @@ public class ProductServiceImpl implements ProductService {
         ProductEntity savedProduct = productRepository.save(product);
         return ProductMapper.convertProductEntityToAddProductResponse(savedProduct);
 
+    }
+
+    @Transactional
+    @Override
+    public void updateProductQuantity(Long productId, UpdateProductQuantityRequest request){
+        ProductEntity productEntity = productRepository.findById(productId)
+                .orElseThrow(() -> new ProductNotFoundException(Message.PRODUCT_NOT_FOUND.name()));
+        productEntity.setQuantity(request.quantity());
     }
 }

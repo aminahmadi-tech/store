@@ -7,16 +7,18 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.Instant;
+
 @Entity
 @Table(name = "products")
 @Getter
 @Setter
 public class ProductEntity extends BaseEntity{
-    @Id
+/*    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     @Setter(AccessLevel.NONE)
-    private Long id;
+    private Long id;*/
 
     @Column(name = "name")
     private String name;
