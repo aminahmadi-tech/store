@@ -2,6 +2,7 @@ package ir.aminahmadi24.store.service.impl;
 
 import ir.aminahmadi24.store.dto.AddProductRequest;
 import ir.aminahmadi24.store.dto.AddProductResponse;
+import ir.aminahmadi24.store.dto.UpdateProductPriceRequest;
 import ir.aminahmadi24.store.dto.UpdateProductQuantityRequest;
 import ir.aminahmadi24.store.entity.CategoryEntity;
 import ir.aminahmadi24.store.entity.ProductEntity;
@@ -58,5 +59,13 @@ public class ProductServiceImpl implements ProductService {
         ProductEntity productEntity = productRepository.findById(productId)
                 .orElseThrow(() -> new ProductNotFoundException(Message.PRODUCT_NOT_FOUND.name()));
         productEntity.setQuantity(request.quantity());
+    }
+
+    @Transactional
+    @Override
+    public void updateProductPrice(Long productId, UpdateProductPriceRequest request) {
+        ProductEntity productEntity = productRepository.findById(productId)
+                .orElseThrow(() -> new ProductNotFoundException(Message.PRODUCT_NOT_FOUND.name()));
+        productEntity.setPrice(request.price());
     }
 }

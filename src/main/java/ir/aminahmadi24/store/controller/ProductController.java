@@ -2,6 +2,7 @@ package ir.aminahmadi24.store.controller;
 
 import ir.aminahmadi24.store.dto.AddProductRequest;
 import ir.aminahmadi24.store.dto.AddProductResponse;
+import ir.aminahmadi24.store.dto.UpdateProductPriceRequest;
 import ir.aminahmadi24.store.dto.UpdateProductQuantityRequest;
 import ir.aminahmadi24.store.service.ProductService;
 import jakarta.validation.Valid;
@@ -33,4 +34,14 @@ public class ProductController {
         productService.updateProductQuantity(id, request);
         return ResponseEntity.noContent().build();
     }
+
+    @PatchMapping("/{id}/price")
+    public ResponseEntity<Void> updatePrice(
+            @PathVariable Long id,
+            @Valid @RequestBody UpdateProductPriceRequest request){
+        productService.updateProductPrice(id, request);
+        return ResponseEntity.noContent().build();
+    }
+
+
 }

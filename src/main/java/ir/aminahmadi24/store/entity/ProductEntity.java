@@ -14,11 +14,6 @@ import java.time.Instant;
 @Getter
 @Setter
 public class ProductEntity extends BaseEntity{
-/*    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    @Setter(AccessLevel.NONE)
-    private Long id;*/
 
     @Column(name = "name")
     private String name;
