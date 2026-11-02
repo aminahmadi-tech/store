@@ -1,9 +1,6 @@
 package ir.aminahmadi24.store.service.impl;
 
-import ir.aminahmadi24.store.dto.AddProductRequest;
-import ir.aminahmadi24.store.dto.AddProductResponse;
-import ir.aminahmadi24.store.dto.UpdateProductPriceRequest;
-import ir.aminahmadi24.store.dto.UpdateProductQuantityRequest;
+import ir.aminahmadi24.store.dto.*;
 import ir.aminahmadi24.store.entity.CategoryEntity;
 import ir.aminahmadi24.store.entity.ProductEntity;
 import ir.aminahmadi24.store.enumeration.CustomError;
@@ -17,6 +14,8 @@ import ir.aminahmadi24.store.service.ProductService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -77,5 +76,18 @@ public class ProductServiceImpl implements ProductService {
 
         productRepository.deleteById(productId);
 
+    }
+
+    @Override
+    public List<ProductDto> getProducts(){
+        List<ProductEntity> productEntities = productRepository.findAll();
+        return ProductMapper.convertProductEntityListToProductDtoList(productEntities);
+    }
+
+    @Override
+    public ProductDto getProductById(Long id) {
+        ProductEntity productEntity = productRepository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException(Message.PRODUCT_NOT_FOUND.name()));
+        return ProductMapper.convertProductEntityToProductDto(productEntity);
     }
 }

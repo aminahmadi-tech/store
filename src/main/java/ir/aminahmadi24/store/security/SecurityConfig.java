@@ -40,8 +40,9 @@ public class SecurityConfig {
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/admin").hasRole(UserRole.ADMIN.name())
                         .requestMatchers(HttpMethod.POST, "/categories").hasRole(UserRole.ADMIN.name())
-                        .requestMatchers(HttpMethod.POST,"/products").hasRole(UserRole.ADMIN.name())
-                        .anyRequest().permitAll()
+                        .requestMatchers(HttpMethod.GET,"/products","/products/**").permitAll()
+                        .requestMatchers("/products/**").hasRole(UserRole.ADMIN.name())
+                        .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(c -> c

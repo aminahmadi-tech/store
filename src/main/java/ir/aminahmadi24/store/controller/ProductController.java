@@ -1,9 +1,7 @@
 package ir.aminahmadi24.store.controller;
 
-import ir.aminahmadi24.store.dto.AddProductRequest;
-import ir.aminahmadi24.store.dto.AddProductResponse;
-import ir.aminahmadi24.store.dto.UpdateProductPriceRequest;
-import ir.aminahmadi24.store.dto.UpdateProductQuantityRequest;
+import ir.aminahmadi24.store.dto.*;
+import ir.aminahmadi24.store.entity.ProductEntity;
 import ir.aminahmadi24.store.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/products")
@@ -50,5 +49,14 @@ public class ProductController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping
+    public List<ProductDto> getProducts(){
+        return productService.getProducts();
+    }
+
+    @GetMapping("/{id}")
+    public ProductDto getProductById(@PathVariable Long id){
+        return productService.getProductById(id);
+    }
 
 }
