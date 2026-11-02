@@ -68,4 +68,14 @@ public class ProductServiceImpl implements ProductService {
                 .orElseThrow(() -> new ProductNotFoundException(Message.PRODUCT_NOT_FOUND.name()));
         productEntity.setPrice(request.price());
     }
+
+    @Override
+    public void removeProduct(Long productId) {
+        boolean exists = productRepository.existsById(productId);
+        if (!exists)
+            throw new ProductNotFoundException(Message.PRODUCT_NOT_FOUND.name());
+
+        productRepository.deleteById(productId);
+
+    }
 }
