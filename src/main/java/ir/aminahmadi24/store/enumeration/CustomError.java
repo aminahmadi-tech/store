@@ -9,7 +9,8 @@ public enum CustomError {
     BAD_REQUEST(400, "BAD_REQUEST"),
     USER_NOT_FOUND(404, "USER_NOT_FOUND"),
     EMAIL_ALREADY_EXISTS(409, "CONFLICT"),
-    CATEGORY_ALREADY_EXISTS(409, "CONFLICT");
+    CATEGORY_ALREADY_EXISTS(409, "CONFLICT"),
+    CATEGORY_NOT_FOUND(404, "CATEGORY_NOT_FOUND");
 
     private int statusCode;
     private String errorCode;

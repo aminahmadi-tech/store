@@ -1,0 +1,50 @@
+package ir.aminahmadi24.store.service.impl;
+
+import ir.aminahmadi24.store.dto.AddProductRequest;
+import ir.aminahmadi24.store.dto.AddProductResponse;
+import ir.aminahmadi24.store.entity.CategoryEntity;
+import ir.aminahmadi24.store.entity.ProductEntity;
+import ir.aminahmadi24.store.enumeration.Message;
+import ir.aminahmadi24.store.exception.CategoryNotFoundException;
+import ir.aminahmadi24.store.mapper.ProductMapper;
+import ir.aminahmadi24.store.repository.CategoryRepository;
+import ir.aminahmadi24.store.repository.ProductRepository;
+import ir.aminahmadi24.store.service.ProductService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+@RequiredArgsConstructor
+@Service
+
+public class ProductServiceImpl implements ProductService {
+    private final CategoryRepository categoryRepository;
+    private final ProductRepository productRepository;
+
+    @Override
+    public AddProductResponse addProduct(AddProductRequest request) {
+        CategoryEntity categoryEntity = categoryRepository.findById(request.getCategoryId())
+                .orElseThrow(() -> new CategoryNotFoundException(Message.CATEGORY_NOT_FOUND.name()));
+
+        ProductEntity product = productRepository.findByNameIgnoreCase(request.getName().trim())
+                .orElse(null);
+
+
+        if(product == null){
+            String description = request.getDescription();
+            if(description == null || description.isBlank())
+                description = null;
+            product = new ProductEntity();
+            product.setName(request.getName());
+            product.setDescription(description);
+            product.setPrice(request.getPrice());
+            product.setQuantity(request.getQuantity());
+            product.setCategory(categoryEntity);
+        }else{
+            product.setQuantity(product.getQuantity() + request.getQuantity());
+        }
+
+        ProductEntity savedProduct = productRepository.save(product);
+        return ProductMapper.convertProductEntityToAddProductResponse(savedProduct);
+
+    }
+}

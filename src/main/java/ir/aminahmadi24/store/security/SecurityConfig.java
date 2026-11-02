@@ -31,31 +31,33 @@ public class SecurityConfig {
     private final AccessDeniedHandler customAccessDeniedHandler;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http){
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) {
         http
-                .sessionManagement( c -> c
+                .sessionManagement(c -> c
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests( c -> c
+                .authorizeHttpRequests(c -> c
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/admin").hasRole(UserRole.ADMIN.name())
-                        .requestMatchers(HttpMethod.POST,"/categories").hasRole(UserRole.ADMIN.name())
+                        .requestMatchers(HttpMethod.POST, "/categories").hasRole(UserRole.ADMIN.name())
+                        .requestMatchers(HttpMethod.POST,"/products").hasRole(UserRole.ADMIN.name())
+                        .anyRequest().permitAll()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .exceptionHandling( c -> c
+                .exceptionHandling(c -> c
                         .authenticationEntryPoint(customAuthenticationEntryPoint)
                         .accessDeniedHandler(customAccessDeniedHandler)
                 );
-        return  http.build();
+        return http.build();
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration config){
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) {
         return config.getAuthenticationManager();
     }
 
