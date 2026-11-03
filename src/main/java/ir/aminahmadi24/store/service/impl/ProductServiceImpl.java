@@ -15,6 +15,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -33,9 +34,9 @@ public class ProductServiceImpl implements ProductService {
                 .orElse(null);
 
 
-        if(product == null){
+        if (product == null) {
             String description = request.getDescription();
-            if(description == null || description.isBlank())
+            if (description == null || description.isBlank())
                 description = null;
             product = new ProductEntity();
             product.setName(request.getName());
@@ -43,7 +44,7 @@ public class ProductServiceImpl implements ProductService {
             product.setPrice(request.getPrice());
             product.setQuantity(request.getQuantity());
             product.setCategory(categoryEntity);
-        }else{
+        } else {
             product.setQuantity(product.getQuantity() + request.getQuantity());
         }
 
@@ -54,7 +55,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Transactional
     @Override
-    public void updateProductQuantity(Long productId, UpdateProductQuantityRequest request){
+    public void updateProductQuantity(Long productId, UpdateProductQuantityRequest request) {
         ProductEntity productEntity = productRepository.findById(productId)
                 .orElseThrow(() -> new ProductNotFoundException(Message.PRODUCT_NOT_FOUND.name()));
         productEntity.setQuantity(request.quantity());
@@ -79,9 +80,13 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductDto> getProducts(){
-        List<ProductEntity> productEntities = productRepository.findAll();
-        return ProductMapper.convertProductEntityListToProductDtoList(productEntities);
+    public List<ProductDto> getAllProducts(Short categoryId) {
+        List<ProductEntity> productEntities;
+        if (categoryId == null) {
+            productEntities = productRepository.findAll();
+            return ProductMapper.convertProductEntityListToProductDtoList(productEntities);
+        }
+        return getProductsByCategoryId(categoryId);
     }
 
     @Override
@@ -89,5 +94,17 @@ public class ProductServiceImpl implements ProductService {
         ProductEntity productEntity = productRepository.findById(id)
                 .orElseThrow(() -> new ProductNotFoundException(Message.PRODUCT_NOT_FOUND.name()));
         return ProductMapper.convertProductEntityToProductDto(productEntity);
+    }
+
+
+    public List<ProductDto> getProductsByCategoryId(Short categoryId) {
+        boolean exists = categoryRepository.existsById(categoryId);
+        if (!exists)
+            throw new CategoryNotFoundException(Message.CATEGORY_NOT_FOUND.name());
+
+        List<ProductEntity> productEntities = productRepository.findByCategory_Id(categoryId);
+        if (productEntities.isEmpty())
+            return new ArrayList<>();
+        return ProductMapper.convertProductEntityListToProductDtoList(productEntities);
     }
 }

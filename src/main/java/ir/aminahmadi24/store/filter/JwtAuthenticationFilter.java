@@ -1,9 +1,8 @@
-package ir.aminahmadi24.store;
+package ir.aminahmadi24.store.filter;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
-import ir.aminahmadi24.store.dto.ErrorResponse;
 import ir.aminahmadi24.store.entity.UserEntity;
 import ir.aminahmadi24.store.enumeration.Message;
 import ir.aminahmadi24.store.enumeration.TokenType;
@@ -16,8 +15,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -39,7 +36,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String authHeader = request.getHeader("Authorization");
         if(authHeader == null || !authHeader.startsWith("Bearer ")){
-            request.setAttribute("auth_error", Message.INVALID_AUTH_HEADER.name());
+            request.setAttribute("auth_error", "Authorization failed. Auth header is null or its not Bearer token.");
             filterChain.doFilter(request, response);
             return;
         }

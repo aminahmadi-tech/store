@@ -1,7 +1,6 @@
 package ir.aminahmadi24.store.controller;
 
 import ir.aminahmadi24.store.dto.*;
-import ir.aminahmadi24.store.entity.ProductEntity;
 import ir.aminahmadi24.store.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -50,8 +49,9 @@ public class ProductController {
     }
 
     @GetMapping
-    public List<ProductDto> getProducts(){
-        return productService.getProducts();
+    public List<ProductDto> getAllProducts(
+            @RequestParam(required = false) Short categoryId){
+        return productService.getAllProducts(categoryId);
     }
 
     @GetMapping("/{id}")
