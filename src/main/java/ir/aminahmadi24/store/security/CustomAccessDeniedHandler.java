@@ -1,5 +1,6 @@
 package ir.aminahmadi24.store.security;
 
+import ir.aminahmadi24.store.enumeration.Message;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -15,7 +16,7 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
         String authError = (String) request.getAttribute("auth_error");
         if (authError == null)
-            authError = HttpStatus.FORBIDDEN.name();
+            authError = Message.NOT_ENOUGH_PERMISSION.name();
         response.setStatus(HttpStatus.FORBIDDEN.value());
         response.setContentType("application/json");
         response.getWriter().write(
