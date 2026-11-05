@@ -18,4 +18,6 @@ public interface CartItemRepository extends JpaRepository<CartItemEntity, Long> 
             WHERE ci.product_id = :productId
             """, nativeQuery = true)
     Optional<Integer> getProductTotalQuantityInAllCarts(@Param("productId") Long productId);
+
+    void deleteByCart_Id(Long cartId);
 }

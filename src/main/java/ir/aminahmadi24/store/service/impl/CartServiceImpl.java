@@ -66,6 +66,13 @@ public class CartServiceImpl implements CartService {
         return buildCartDto(cart.getId());
     }
 
+    @Override
+    @Transactional
+    public void clearCart(Long userId) {
+        CartEntity cart = findCartByUserId(userId);
+        cartItemRepository.deleteByCart_Id(cart.getId());
+    }
+
     private ProductEntity findProduct(Long id) {
         return productRepository.findById(id)
                 .orElseThrow(() -> new ProductNotFoundException(Message.PRODUCT_NOT_FOUND.name()));

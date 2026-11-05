@@ -38,4 +38,10 @@ public class CartController {
     public ResponseEntity<CartDto> getCart(@AuthenticationPrincipal Long userId){
         return ResponseEntity.ok(cartService.getCart(userId));
     }
+
+    @DeleteMapping("/items")
+    public ResponseEntity<Void> clearCart(@AuthenticationPrincipal Long userId){
+        cartService.clearCart(userId);
+        return ResponseEntity.noContent().build();
+    }
 }
