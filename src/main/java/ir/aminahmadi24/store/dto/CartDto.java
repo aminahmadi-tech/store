@@ -8,11 +8,11 @@ import java.util.List;
 @Getter
 public class CartDto {
     private Long cartId;
-    private List<CartItemDto> cartItems;
+    private List<CartItemDto> items;
     private Long totalPrice = 0L;
 
     public Long calculateTotalPrice(){
-        for (CartItemDto cartItemDto: cartItems){
+        for (CartItemDto cartItemDto: items){
             totalPrice += cartItemDto.getTotalPrice();
         }
         return totalPrice;

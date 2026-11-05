@@ -32,4 +32,10 @@ public class CartController {
         cartService.removeFromCart(userId, productId);
         return ResponseEntity.noContent().build();
     }
+
+
+    @GetMapping
+    public ResponseEntity<CartDto> getCart(@AuthenticationPrincipal Long userId){
+        return ResponseEntity.ok(cartService.getCart(userId));
+    }
 }

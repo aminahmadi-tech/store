@@ -12,8 +12,8 @@ public abstract class CartMapper {
     public static CartItemDto convertCartItemEntityToCartItemDto(CartItemEntity cartItem){
         ProductDtoV2 productDtoV2 = ProductMapper.convertProductEntityToProductDtoV2(cartItem.getProduct());
         CartItemDto cartItemDto = new CartItemDto();
-        cartItemDto.setCartItemId(cartItem.getId());
-        cartItemDto.setCartId(cartItem.getCart().getId());
+        /*cartItemDto.setCartItemId(cartItem.getId());
+        cartItemDto.setCartId(cartItem.getCart().getId());*/
         cartItemDto.setProduct(productDtoV2);
         cartItemDto.setQuantity(cartItem.getQuantity());
         cartItemDto.setUnitPrice(cartItem.getUnitPrice());
@@ -30,9 +30,13 @@ public abstract class CartMapper {
     public static CartDto getCartDto(Long cartId, List<CartItemDto> cartItemDtos){
         CartDto cartDto = new CartDto();
         cartDto.setCartId(cartId);
-        cartDto.setCartItems(cartItemDtos);
+        cartDto.setItems(cartItemDtos);
         cartDto.setTotalPrice(cartDto.calculateTotalPrice());
         return cartDto;
     }
+
+    /*public static CartDto convertCartEntityToCartDto(CartEntity cart){
+
+    }*/
 
 }

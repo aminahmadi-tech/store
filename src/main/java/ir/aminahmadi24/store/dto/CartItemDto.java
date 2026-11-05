@@ -7,8 +7,8 @@ import lombok.Setter;
 @Setter
 @Getter
 public class CartItemDto {
-    private Long cartItemId;
-    private Long cartId;
+/*    private Long cartItemId;
+    private Long cartId;*/
     private ProductDtoV2 product;
     private Integer quantity;
     private Long unitPrice;
