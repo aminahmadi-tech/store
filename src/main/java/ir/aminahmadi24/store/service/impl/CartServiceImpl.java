@@ -9,6 +9,7 @@ import ir.aminahmadi24.store.entity.CartItemEntity;
 import ir.aminahmadi24.store.entity.ProductEntity;
 import ir.aminahmadi24.store.entity.UserEntity;
 import ir.aminahmadi24.store.enumeration.Message;
+import ir.aminahmadi24.store.exception.CartNotFoundException;
 import ir.aminahmadi24.store.exception.InsufficientProductStockException;
 import ir.aminahmadi24.store.exception.ProductNotFoundException;
 import ir.aminahmadi24.store.exception.UserNotFoundException;
@@ -45,6 +46,20 @@ public class CartServiceImpl implements CartService {
         return buildCartDto(cart.getId());
     }
 
+    @Override
+    @Transactional
+    public void removeFromCart(Long userId, Long productId) {
+        CartEntity cart = findCartByUserId(userId);
+        CartItemEntity cartItem = findProductInCart(cart.getId(), productId);
+
+        if (cartItem.getQuantity() > 1) {
+            cartItem.setQuantity(cartItem.getQuantity() - 1);
+        } else {
+            cartItemRepository.deleteById(cartItem.getId());
+        }
+
+    }
+
     private ProductEntity findProduct(Long id) {
         return productRepository.findById(id)
                 .orElseThrow(() -> new ProductNotFoundException(Message.PRODUCT_NOT_FOUND.name()));
@@ -61,7 +76,6 @@ public class CartServiceImpl implements CartService {
     private CartEntity getOrCreateCart(Long userId) {
         return cartRepository.findByUser_Id(userId)
                 .orElseGet(() -> createCart(userId));
-
     }
 
     private CartEntity createCart(Long userId) {
@@ -101,6 +115,17 @@ public class CartServiceImpl implements CartService {
         List<CartItemEntity> cartItemEntities = cartItemRepository.findByCart_Id(cartId);
         List<CartItemDto> cartItemDtos = CartMapper.convertCartItemListToCartItemDtoList(cartItemEntities);
         return CartMapper.getCartDto(cartId, cartItemDtos);
+    }
+
+    private CartEntity findCartByUserId(Long userId) {
+        return cartRepository.findByUser_Id(userId)
+                .orElseThrow(() -> new CartNotFoundException(Message.CART_NOT_FOUND.name()));
+    }
+
+    private CartItemEntity findProductInCart(Long cartId, Long productId) {
+        return cartItemRepository.findByCart_IdAndProduct_Id(cartId, productId)
+                .orElseThrow(() ->
+                        new ProductNotFoundException(Message.PRODUCT_DOES_NOT_EXIST_IN_CART.name()));
     }
 
 
