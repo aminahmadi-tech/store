@@ -14,7 +14,7 @@ spring:
 server:
   servlet:
     context-path: /api/v1
-  port: 8080
+  port: 3000
 
 jwt:
   secret: ${JWT_SECRET}
