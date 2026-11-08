@@ -1,5 +1,6 @@
 package ir.aminahmadi24.store.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,5 +17,10 @@ public class CartDto {
             totalPrice += cartItemDto.getTotalPrice();
         }
         return totalPrice;
+    }
+
+    @JsonIgnore
+    public boolean isEmpty(){
+        return items.isEmpty();
     }
 }

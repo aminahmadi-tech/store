@@ -13,7 +13,8 @@ public enum CustomError {
     CATEGORY_NOT_FOUND(404, "CATEGORY_NOT_FOUND"),
     PRODUCT_NOT_FOUND(404, "PRODUCT_NOT_FOUND"),
     INSUFFICIENT_PRODUCT_STOCK(409, "CONFLICT"),
-    CART_NOT_FOUND(404, "CART_NOT_FOUND");
+    CART_NOT_FOUND(404, "CART_NOT_FOUND"),
+    CART_IS_EMPTY(400, "CART_IS_EMPTY");
 
     private int statusCode;
     private String errorCode;
