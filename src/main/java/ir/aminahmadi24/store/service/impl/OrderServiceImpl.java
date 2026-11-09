@@ -8,6 +8,7 @@ import ir.aminahmadi24.store.entity.*;
 import ir.aminahmadi24.store.enumeration.Message;
 import ir.aminahmadi24.store.enumeration.OrderStatus;
 import ir.aminahmadi24.store.exception.EmptyCartException;
+import ir.aminahmadi24.store.exception.OrderNotFoundException;
 import ir.aminahmadi24.store.exception.ProductNotFoundException;
 import ir.aminahmadi24.store.exception.UserNotFoundException;
 import ir.aminahmadi24.store.mapper.OrderMapper;
@@ -86,5 +87,21 @@ public class OrderServiceImpl implements OrderService {
         orderItems = orderItemRepository.saveAll(orderItems);
         cartService.clearCart(userId);
         return OrderMapper.getOrderDto(order, orderItems);
+    }
+
+    @Override
+    public List<OrderDto> getAllUserOrders(Long userId) {
+        List<OrderEntity> orders = orderRepository.findAllByUser_Id(userId);
+        if(orders.isEmpty())
+            throw new OrderNotFoundException(Message.USER_DOES_NOT_HAVE_ANY_ORDERS.name());
+
+        List<OrderDto> orderDtos = new ArrayList<>();
+
+        for (OrderEntity order: orders){
+            List<OrderItemEntity> orderItems = orderItemRepository.findByOrder_Id(order.getId());
+            OrderDto orderDto = OrderMapper.getOrderDto(order, orderItems);
+            orderDtos.add(orderDto);
+        }
+        return orderDtos;
     }
 }

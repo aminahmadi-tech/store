@@ -14,7 +14,8 @@ public enum CustomError {
     PRODUCT_NOT_FOUND(404, "PRODUCT_NOT_FOUND"),
     INSUFFICIENT_PRODUCT_STOCK(409, "CONFLICT"),
     CART_NOT_FOUND(404, "CART_NOT_FOUND"),
-    CART_IS_EMPTY(400, "CART_IS_EMPTY");
+    CART_IS_EMPTY(400, "CART_IS_EMPTY"),
+    ORDER_NOT_FOUND(400, "ORDER_NOT_FOUND");
 
     private int statusCode;
     private String errorCode;

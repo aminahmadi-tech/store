@@ -41,7 +41,7 @@ public class SecurityConfig {
                         .permitAll()
                         .requestMatchers("/products/**").hasRole(UserRole.ADMIN.name())
                         .requestMatchers("/cart/**").authenticated()
-                        .requestMatchers("/order/**").authenticated()
+                        .requestMatchers("/orders/**").authenticated()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)

@@ -15,13 +15,13 @@ import org.springframework.web.bind.annotation.RestController;
 import java.net.URI;
 
 @RestController
-@RequestMapping("/order")
+@RequestMapping("/checkout")
 @RequiredArgsConstructor
 public class CheckoutController {
 
     private final OrderServiceImpl orderService;
 
-    @GetMapping("/checkout")
+    @GetMapping()
     public ResponseEntity<OrderDto> checkout(
             @AuthenticationPrincipal Long userId,
             @Valid @RequestBody CheckoutOrderRequest request){
